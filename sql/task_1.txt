@@ -1,0 +1,58 @@
+-- Романчук Роман Валерьевич
+-- Вариант 8
+/*
+Описание элементов электронной поваренной книги. Включает в себя: категории блюд в виде дерева, ингредиенты, блюда, таблицу соответствия нестандартных единиц измерения стандартным. Каждая категория блюд состоит из: названия и связи или связей в дереве. Ингредиенты состоят из краткого описания, списка идентификаторов изображений, списка альтернативных названий. Блюда состоят из: названия, списка ингредиентов с указанием их количества, списка идентификаторов изображений, общего времени приготовления, подробной инструкции, списка используемой техники. Таблица соответствия нестандартных единиц измерения стандартным состоит из: указания нестандартной единицы измерения, ингредиента, указания соответствующего количества в стандартных единицах измерения и название стандартной единицы измерения.
+Количество ингредиентов в блюде может указываться в любых единицах измерения. 
+Блюдо может относиться только к одной категории.
+*/
+
+CREATE TABLE IF NOT EXISTS categories
+(
+   id serial PRIMARY KEY,
+   name varchar(64) NOT NULL UNIQUE,
+   parent_id integer REFERENCES categories(id)
+);
+
+CREATE TABLE IF NOT EXISTS images
+(
+   id serial PRIMARY KEY,
+   url text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ingredients
+(
+  id serial PRIMARY KEY,
+  name varchar(64) NOT NULL UNIQUE,
+  alternative_name varchar(64),
+  short_description text NOT NULL, 
+  image_id integer REFERENCES images(id) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS dishes
+(
+   id serial PRIMARY KEY,
+   name varchar(64) NOT NULL UNIQUE,
+   category_id integer REFERENCES categories(id) NOT NULL,
+   image_id integer REFERENCES images(id) NOT NULL,
+   time integer NOT NULL,
+   description text NOT NULL, 
+   technic text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS dish_ingredients
+(
+   id serial PRIMARY KEY,
+   dish_id integer REFERENCES dishes(id) NOT NULL,
+   ingredient_id integer REFERENCES ingredients(id) NOT NULL,
+   ingredient_count numeric NOT NULL,
+   unit varchar(32) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS matching_table
+(
+   id serial PRIMARY KEY,
+   standard_name varchar(64) NOT NULL,
+   non_standard_name varchar(64) NOT NULL,
+   ingredient_id integer REFERENCES ingredients(id) NOT NULL,
+   quantity numeric NOT NULL
+);
