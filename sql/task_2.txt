@@ -1,0 +1,93 @@
+-- Романчук Роман Валерьевич
+-- Вариант 8
+/*
+Выберите все блюда (все поля таблицы), подробная инструкция которых, с учётом того, что инструкция не содержит кавычек или многоточий, содержит слово «сыр» в конце какого-либо предложения, отсортировав их по времени приготовления. 
+Решение:
+SELECT * FROM public.dishes
+WHERE description LIKE '%сыр%'
+ORDER BY time DESC
+
+Выберите все блюда и количество ингредиентов в них, которые готовятся  более 2 часов и содержат более 2 ингредиентов. 
+Решение:
+SELECT name, cnt
+FROM
+	(SELECT 
+   	 name
+    ,time
+ 	,(SELECT COUNT(ingredient_id) FROM public.dish_ingredients WHERE dishes.id = dish_ingredients.dish_id) AS "cnt"
+	FROM public.dishes) AS "raw"
+WHERE 1=1
+AND time > 120
+AND cnt > 2
+
+*/
+
+-- categories
+INSERT INTO categories (name, parent_id) VALUES
+('Салаты', NULL),
+('Супы', NULL),
+('Основные блюда', NULL),
+('Завтраки', NULL),
+('Десерты', NULL);
+
+-- images
+INSERT INTO images (url) VALUES
+('https://example.com/images/caesar.jpg'),
+('https://example.com/images/borscht.jpg'),
+('https://example.com/images/pizza.jpg'),
+('https://example.com/images/omelette.jpg'),
+('https://example.com/images/syrniki.jpg'),
+('https://example.com/images/cheese.jpg'),
+('https://example.com/images/egg.jpg'),
+('https://example.com/images/milk.jpg'),
+('https://example.com/images/tomato.jpg'),
+('https://example.com/images/flour.jpg');
+
+-- ingredients
+INSERT INTO ingredients (name, alternative_name, short_description, image_id) VALUES
+('Сыр Пармезан', 'Пармезан', 'Твёрдый итальянский сыр с насыщенным вкусом.', 6),
+('Яйцо куриное', 'Яйца', 'Источник белка, используется в кулинарии повсеместно.', 7),
+('Молоко', NULL, 'Питьевой продукт животного происхождения, используется для соусов, теста и напитков.', 8),
+('Томаты', 'Помидоры', 'Красные сочные овощи, используются для салатов и соусов.', 9),
+('Мука пшеничная', 'Мука', 'Основной ингредиент для выпечки и панировки.', 10),
+('Курица', 'Куриное филе', 'Диетическое мясо, используется в салатах и горячих блюдах.', 2),
+('Сыр творожный', 'Творог', 'Молочный продукт, используется в десертах и завтраках.', 6);
+
+-- dishes
+INSERT INTO dishes (name, category_id, image_id, time, description, technic) VALUES
+('Салат Цезарь', 1, 1, 20, 'Нарезать листья салата, добавить курицу и сухарики. Посыпать тертым сыр.', 'Без термической обработки'),
+('Борщ', 2, 2, 125, 'Отварить мясо, добавить свёклу и томаты. В конце добавить натертый сыр.', 'Варка'),
+('Пицца Маргарита', 3, 3, 40, 'Приготовить тесто, выложить соус и сыр. Выпекать в духовке.', 'Выпекание'),
+('Омлет классический', 4, 4, 10, 'Взбить яйца с молоком, посолить и обжарить на сковороде.', 'Жарка'),
+('Сырники', 5, 5, 25, 'Смешать творог, яйцо и муку. Обжарить с двух сторон.', 'Жарка');
+
+-- dish_ingredients
+INSERT INTO dish_ingredients (dish_id, ingredient_id, ingredient_count, unit) VALUES
+-- Салат Цезарь
+(1, 6, 150, 'г'),
+(1, 1, 30, 'г'),
+(1, 4, 50, 'г'),
+-- Борщ
+(2, 4, 200, 'г'),
+(2, 6, 100, 'г'),
+(2, 1, 20, 'г'),
+-- Пицца Маргарита
+(3, 5, 200, 'г'),
+(3, 4, 100, 'г'),
+(3, 1, 50, 'г'),
+-- Омлет
+(4, 2, 2, 'шт'),
+(4, 3, 50, 'мл'),
+(4, 1, 10, 'г'),
+-- Сырники
+(5, 7, 200, 'г'),
+(5, 2, 1, 'шт'),
+(5, 5, 30, 'г');
+
+-- matching_table
+INSERT INTO matching_table (standard_name, non_standard_name, ingredient_id, quantity) VALUES
+('грамм', 'щепотка', 1, 2),
+('миллилитр', 'столовая ложка', 3, 15),
+('грамм', 'столовая ложка', 5, 25),
+('штука', 'яйцо', 2, 1),
+('грамм', 'стакан', 5, 120);
