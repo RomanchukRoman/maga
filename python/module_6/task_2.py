@@ -1,4 +1,5 @@
 class Vehicle:
+    'Базовый класс транспортных средств'
     def __init__(self, brand, model, year):
         self.brand = brand
         self.model = model
@@ -8,6 +9,7 @@ class Vehicle:
         return f'{self.year} {self.brand} {self.model}'
 
 class Car(Vehicle):
+    'Класс машин, наследующий базовый'
     def __init__(self, brand, model, year, num_doors):
         super().__init__(brand, model, year)
         self.num_doors = num_doors
@@ -17,6 +19,7 @@ class Car(Vehicle):
         return f'{base_info} {self.num_doors} двери'
 
 class Motorcycle(Vehicle):
+    'Класс мотоциклов, наследующий базовый'
     def __init__(self, brand, model, year, engine_volume):
         super().__init__(brand, model, year)
         self.engine_volume = engine_volume
