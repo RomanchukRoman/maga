@@ -1,0 +1,7 @@
+INFO: User 'admin' logged in successfully.
+WARNING: Disk space is running low.
+ERROR: Failed to connect to database.
+INFO: Request processed in 200ms.
+ERROR: Null pointer exception at line 42.
+ERROR: Failed to connect to database.
+TEST: Test.
