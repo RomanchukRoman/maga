@@ -4,13 +4,11 @@ from dbtable import *
 
 class PeopleTable(DbTable):
     def table_name(self):
-        return self.dbconn.prefix + "people"
+        return self.dbconn.prefix + "categories"
 
     def columns(self):
         return {"id": ["serial", "PRIMARY KEY"],
-                "last_name": ["varchar(32)", "NOT NULL"],
-                "first_name": ["varchar(32)", "NOT NULL"],
-                "second_name": ["varchar(32)"]}
+                "name": ["varchar(64)", "NOT NULL"]}
 
     def find_by_position(self, num):
         sql = "SELECT * FROM " + self.table_name()
