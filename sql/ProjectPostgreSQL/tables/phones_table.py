@@ -1,24 +1,26 @@
-# Таблица Телефоны и особые действия с ней.
+# Таблица блюд и особые действия с ней.
 
 from dbtable import *
 
 class PhonesTable(DbTable):
     def table_name(self):
-        return self.dbconn.prefix + "phones"
+        return self.dbconn.prefix + "dishes"
 
     def columns(self):
-        return {"person_id": ["integer", "REFERENCES people(id)"],
-                "phone": ["varchar(12)", "NOT NULL"]}
+        return {"category_id": ["integer", "REFERENCES categories(id)"],
+                "name": ["varchar(64)", "NOT NULL"],
+                "description": ["text", "NOT NULL"],
+                "technic": ["text", "NOT NULL"]}
     
     def primary_key(self):
-        return ['person_id', 'phone']    
+        return ['id']    
 
     def table_constraints(self):
-        return ["PRIMARY KEY(person_id, phone)"]
+        return ["PRIMARY KEY(id)"]
 
     def all_by_person_id(self, pid):
         sql = "SELECT * FROM " + self.table_name()
-        sql += " WHERE person_id = %s"
+        sql += " WHERE category_id = %s"
         sql += " ORDER BY "
         sql += ", ".join(self.primary_key())
         cur = self.dbconn.conn.cursor()
