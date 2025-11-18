@@ -7,16 +7,21 @@ class DishesTable(DbTable):
         return self.dbconn.prefix + "dishes"
 
     def columns(self):
-        return {"category_id": ["integer", "REFERENCES categories(id)"],
-                "name": ["varchar(64)", "NOT NULL"],
-                "description": ["text", "NOT NULL"],
-                "technic": ["text", "NOT NULL"]}
+        return {
+            "id": ["serial", "PRIMARY KEY"],
+            "name": ["varchar(64)", "NOT NULL", "UNIQUE"],
+            "category_id": ["integer", "NOT NULL", "REFERENCES categories(id) ON DELETE CASCADE"],
+            "image_id": ["integer", "REFERENCES images(id)"],  # Убрал NOT NULL
+            "time": ["integer", "NOT NULL"],
+            "description": ["text", "NOT NULL"],
+            "technic": ["text", "NOT NULL"]
+        }
     
     def primary_key(self):
-        return ['id']    
+        return ['id']
 
     def table_constraints(self):
-        return ["PRIMARY KEY(id)"]
+        return [] 
 
     def all_by_category_id(self, cid):
         sql = "SELECT * FROM " + self.table_name()
@@ -24,6 +29,5 @@ class DishesTable(DbTable):
         sql += " ORDER BY "
         sql += ", ".join(self.primary_key())
         cur = self.dbconn.conn.cursor()
-        cur.execute(sql, str(cid))
-        return cur.fetchall()           
-
+        cur.execute(sql, (cid,)) 
+        return cur.fetchall()

@@ -25,12 +25,16 @@ class Main:
     def db_insert_somethings(self):
         ct = CategoriesTable()
         dt = DishesTable()
-        ct.insert_one(["Test", "Test", "Test"])
-        ct.insert_one(["Test2", "Test2", "Test2"])
-        ct.insert_one(["Test3", "Test3", "Test3"])
-        dt.insert_one([1, "123"])
-        dt.insert_one([2, "123"])
-        dt.insert_one([3, "123"])
+        
+        # categories: name и parent_id
+        ct.insert_one(["Салаты", None])
+        ct.insert_one(["Супы", None])  
+        ct.insert_one(["Десерты", None])
+        
+        # dishes: category_id, description, image_id, name, technic, time
+        dt.insert_one([1, "Салат Цезарь с курицей", None, "Цезарь", "Нарезать, смешать", 30])
+        dt.insert_one([1, "Салат Оливье", None, "Оливье", "Варить, резать, смешать", 45])
+        dt.insert_one([2, "Красный борщ", None, "Борщ", "Варить овощи", 60])
 
     def db_drop(self):
         dt = DishesTable()
@@ -84,10 +88,15 @@ class Main:
     def after_show_categories(self, next_step):
         while True:
             if next_step == "4":
-                print("Пока не реализовано!")
+                # Удаление категории
+                self.delete_category()
                 return "1"
-            elif next_step == "6" or next_step == "7":
-                print("Пока не реализовано!")
+            elif next_step == "6":
+                print("Пока не реализовано!")  # Добавление блюда
+                next_step = "5"
+            elif next_step == "7":
+                # Удаление блюда
+                self.delete_dish()
                 next_step = "5"
             elif next_step == "5":
                 next_step = self.show_dishes_by_categories()
@@ -97,21 +106,79 @@ class Main:
             else:
                 return next_step
 
-    def show_add_category(self):
-        data = []
-        data.append(input("Введите название категории (1 - отмена): ").strip())
-        if data[0] == "1":
+    def delete_category(self):
+        """Удаление выбранной категории"""
+        num = input("Укажите номер строки категории для удаления (0 - отмена): ").strip()
+        if num == "0":
             return
-        while len(data[0].strip()) == 0:
-            data[0] = input("Название не может быть пустым! Введите название заново (1 - отмена):").strip()
-            if data[0] == "1":
+        
+        try:
+            num = int(num)
+            category = CategoriesTable().find_by_position(num)
+            if not category:
+                print("Категория с таким номером не найдена!")
                 return
-        # Проверка на максимальную длину строк.
-        while len(data[0].strip()) > 64:
-            data[0] = input("Название не может быть более 64 символов! Введите название заново (1 - отмена):").strip()
-            if data[0] == "1":
+            
+            # Подтверждение удаления
+            confirm = input(f"Вы уверены, что хотите удалить категорию '{category[1]}'? (y/n): ")
+            if confirm.lower() == 'y':
+                CategoriesTable().delete_by_id(category[0])
+                print("Категория удалена!")
+            else:
+                print("Удаление отменено.")
+                
+        except ValueError:
+            print("Ошибка: введите корректный номер!")
+
+    def delete_dish(self):
+        """Удаление выбранного блюда"""
+        if self.category_id == -1:
+            print("Сначала выберите категорию!")
+            return
+        
+        # Показываем блюда еще раз для выбора
+        print("Блюда:")
+        lst = DishesTable().all_by_category_id(self.category_id)
+        for i, dish in enumerate(lst, 1):
+            print(f"{i}\t{dish[1]}")
+        
+        num = input("Укажите номер блюда для удаления (0 - отмена): ").strip()
+        if num == "0":
+            return
+        
+        try:
+            num = int(num)
+            if num < 1 or num > len(lst):
+                print("Блюдо с таким номером не найдено!")
                 return
-        CategoriesTable().insert_one(data)
+            
+            dish_to_delete = lst[num - 1]
+            confirm = input(f"Вы уверены, что хотите удалить блюдо '{dish_to_delete[1]}'? (y/n): ")
+            if confirm.lower() == 'y':
+                DishesTable().delete_by_id(dish_to_delete[0])
+                print("Блюдо удалено!")
+            else:
+                print("Удаление отменено.")
+                
+        except ValueError:
+            print("Ошибка: введите корректный номер!")
+
+    def show_add_category(self):
+        name = input("Введите название категории (1 - отмена): ").strip()
+        if name == "1":
+            return
+        
+        while len(name.strip()) == 0:
+            name = input("Название не может быть пустым! Введите название заново (1 - отмена):").strip()
+            if name == "1":
+                return
+        
+        while len(name.strip()) > 64:
+            name = input("Название не может быть более 64 символов! Введите название заново (1 - отмена):").strip()
+            if name == "1":
+                return
+        
+        CategoriesTable().insert_one([name, None])
         return
 
     def show_dishes_by_categories(self):
@@ -172,4 +239,3 @@ m = Main()
 # соединения с БД
 # m.test()
 m.main_cycle()
-    

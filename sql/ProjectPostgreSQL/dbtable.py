@@ -15,7 +15,7 @@ class DbTable:
         return {"test": ["integer", "PRIMARY KEY"]}
 
     def column_names(self):
-        return sorted(self.columns().keys(), key = lambda x: x)
+        return list(self.columns().keys())
 
     def primary_key(self):
         return ['id']
@@ -40,23 +40,36 @@ class DbTable:
         return
 
     def drop(self):
-        sql = "DROP TABLE IF EXISTS " + self.table_name()
+        sql = "DROP TABLE IF EXISTS " + self.table_name() + " CASCADE"
         cur = self.dbconn.conn.cursor()
         cur.execute(sql)
         self.dbconn.conn.commit()
         return
 
     def insert_one(self, vals):
-        for i in range(0, len(vals)):
-            if type(vals[i]) == str:
-                vals[i] = "'" + vals[i] + "'"
+        sql_vals = []
+        for val in vals:
+            if val is None:
+                sql_vals.append("NULL")  
+            elif type(val) == str:
+                sql_vals.append("'" + val + "'")
             else:
-                vals[i] = str(vals[i])
+                sql_vals.append(str(val))
+        
         sql = "INSERT INTO " + self.table_name() + "("
         sql += ", ".join(self.column_names_without_id()) + ") VALUES("
-        sql += ", ".join(vals) + ")"
+        sql += ", ".join(sql_vals) + ")"
         cur = self.dbconn.conn.cursor()
         cur.execute(sql)
+        self.dbconn.conn.commit()
+        return
+    
+    # Удаление
+    def delete_by_id(self, record_id):
+        pk_column = self.primary_key()[0]
+        sql = f"DELETE FROM {self.table_name()} WHERE {pk_column} = %s"
+        cur = self.dbconn.conn.cursor()
+        cur.execute(sql, (record_id,))
         self.dbconn.conn.commit()
         return
 

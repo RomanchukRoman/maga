@@ -7,8 +7,11 @@ class CategoriesTable(DbTable):
         return self.dbconn.prefix + "categories"
 
     def columns(self):
-        return {"id": ["serial", "PRIMARY KEY"],
-                "name": ["varchar(64)", "NOT NULL"]}
+        return {
+            "id": ["serial", "PRIMARY KEY"],
+            "name": ["varchar(64)", "NOT NULL", "UNIQUE"],
+            "parent_id": ["integer", "REFERENCES categories(id)"]
+        }
 
     def find_by_position(self, num):
         sql = "SELECT * FROM " + self.table_name()
