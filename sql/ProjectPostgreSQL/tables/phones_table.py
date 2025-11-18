@@ -18,7 +18,7 @@ class PhonesTable(DbTable):
     def table_constraints(self):
         return ["PRIMARY KEY(id)"]
 
-    def all_by_person_id(self, pid):
+    def all_by_category_id(self, pid):
         sql = "SELECT * FROM " + self.table_name()
         sql += " WHERE category_id = %s"
         sql += " ORDER BY "

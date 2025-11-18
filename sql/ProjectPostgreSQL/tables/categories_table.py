@@ -2,7 +2,7 @@
 
 from dbtable import *
 
-class PeopleTable(DbTable):
+class CategoriesTable(DbTable):
     def table_name(self):
         return self.dbconn.prefix + "categories"
 

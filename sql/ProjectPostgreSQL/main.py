@@ -3,7 +3,7 @@ sys.path.append('tables')
 
 from project_config import *
 from dbconnection import *
-from tables.people_table import *
+from tables.categories_table import *
 from tables.phones_table import *
 
 class Main:
@@ -16,25 +16,25 @@ class Main:
         return
 
     def db_init(self):
-        pt = PeopleTable()
+        ct = CategoriesTable()
         pht = PhonesTable()
-        pt.create()
+        ct.create()
         pht.create()
         return
 
     def db_insert_somethings(self):
-        pt = PeopleTable()
+        ct = CategoriesTable()
         pht = PhonesTable()
-        pt.insert_one(["Test", "Test", "Test"])
-        pt.insert_one(["Test2", "Test2", "Test2"])
-        pt.insert_one(["Test3", "Test3", "Test3"])
+        ct.insert_one(["Test", "Test", "Test"])
+        ct.insert_one(["Test2", "Test2", "Test2"])
+        ct.insert_one(["Test3", "Test3", "Test3"])
         pht.insert_one([1, "123"])
         pht.insert_one([2, "123"])
         pht.insert_one([3, "123"])
 
     def db_drop(self):
         pht = PhonesTable()
-        pt = PeopleTable()
+        pt = CategoriesTable()
         pht.drop()
         pt.drop()
         return
@@ -64,12 +64,12 @@ class Main:
         else:
             return next_step
             
-    def show_people(self):
-        self.person_id = -1
+    def show_categories(self):
+        self.category_id = -1
         menu = """Просмотр списка категорий!
 №\tКатегория"""
         print(menu)
-        lst = PeopleTable().all()
+        lst = CategoriesTable().all()
         for i in lst:
             print(str(i[0]) + "\t" + str(i[1]))
         menu = """Дальнейшие операции: 
@@ -81,7 +81,7 @@ class Main:
         print(menu)
         return
 
-    def after_show_people(self, next_step):
+    def after_show_categories(self, next_step):
         while True:
             if next_step == "4":
                 print("Пока не реализовано!")
@@ -90,14 +90,14 @@ class Main:
                 print("Пока не реализовано!")
                 next_step = "5"
             elif next_step == "5":
-                next_step = self.show_phones_by_people()
+                next_step = self.show_phones_by_categories()
             elif next_step != "0" and next_step != "9" and next_step != "3":
                 print("Выбрано неверное число! Повторите ввод!")
                 return "1"
             else:
                 return next_step
 
-    def show_add_person(self):
+    def show_add_category(self):
         # Не реализована проверка на максимальную длину строк. Нужно доделать самостоятельно!
         data = []
         data.append(input("Введите имя (1 - отмена): ").strip())
@@ -117,27 +117,27 @@ class Main:
         data.append(input("Введите отчество (1 - отмена):").strip())
         if data[2] == "1":
             return
-        PeopleTable().insert_one(data)
+        CategoriesTable().insert_one(data)
         return
 
-    def show_phones_by_people(self):
-        if self.person_id == -1:
+    def show_phones_by_categories(self):
+        if self.category_id == -1:
             while True:
                 num = input("Укажите номер строки, в которой записана интересующая Вас категория (0 - отмена):")
                 while len(num.strip()) == 0:
                     num = input("Пустая строка. Повторите ввод! Укажите номер строки, в которой записана интересующая Вас категория (0 - отмена):")
                 if num == "0":
                     return "1"
-                person = PeopleTable().find_by_position(int(num))
-                if not person:
+                category = CategoriesTable().find_by_position(int(num))
+                if not category:
                     print("Введено число, неудовлетворяющее количеству категорий!")
                 else:
-                    self.person_id = int(person[0]) # заменил 1 на 0
-                    self.person_obj = person
+                    self.category_id = int(category[0]) # заменил 1 на 0
+                    self.category_obj = category
                     break
-        print("Выбрана категория: " + self.person_obj[1])
+        print("Выбрана категория: " + self.category_obj[1])
         print("Блюда:")
-        lst = PhonesTable().all_by_person_id(self.person_id)
+        lst = PhonesTable().all_by_category_id(self.category_id)
         for i in lst:
             print(i[1])
         menu = """Дальнейшие операции:
@@ -160,13 +160,13 @@ class Main:
                 next_step = self.read_next_step()
                 current_menu = self.after_main_menu(next_step)
             elif current_menu == "1":
-                self.show_people()
+                self.show_categories()
                 next_step = self.read_next_step()
-                current_menu = self.after_show_people(next_step)
+                current_menu = self.after_show_categories(next_step)
             elif current_menu == "2":
                 self.show_main_menu()
             elif current_menu == "3":
-                self.show_add_person()
+                self.show_add_category()
                 current_menu = "1"
         print("До свидания!")    
         return
