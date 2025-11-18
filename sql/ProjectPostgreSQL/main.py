@@ -98,25 +98,19 @@ class Main:
                 return next_step
 
     def show_add_category(self):
-        # Не реализована проверка на максимальную длину строк. Нужно доделать самостоятельно!
         data = []
-        data.append(input("Введите имя (1 - отмена): ").strip())
+        data.append(input("Введите название категории (1 - отмена): ").strip())
         if data[0] == "1":
             return
         while len(data[0].strip()) == 0:
-            data[0] = input("Имя не может быть пустым! Введите имя заново (1 - отмена):").strip()
+            data[0] = input("Название не может быть пустым! Введите название заново (1 - отмена):").strip()
             if data[0] == "1":
                 return
-        data.append(input("Введите фамилию (1 - отмена): ").strip())
-        if data[1] == "1":
-            return
-        while len(data[1].strip()) == 0:
-            data[1] = input("Фамилия не может быть пустой! Введите фамилию заново (1 - отмена):").strip()
-            if data[1] == "1":
+        # Проверка на максимальную длину строк. Нужно доделать самостоятельно!
+        while len(data[0].strip()) > 64:
+            data[0] = input("Название не может быть более 64 символов! Введите название заново (1 - отмена):").strip()
+            if data[0] == "1":
                 return
-        data.append(input("Введите отчество (1 - отмена):").strip())
-        if data[2] == "1":
-            return
         CategoriesTable().insert_one(data)
         return
 
@@ -132,7 +126,7 @@ class Main:
                 if not category:
                     print("Введено число, неудовлетворяющее количеству категорий!")
                 else:
-                    self.category_id = int(category[0]) # заменил 1 на 0
+                    self.category_id = int(category[0]) 
                     self.category_obj = category
                     break
         print("Выбрана категория: " + self.category_obj[1])
