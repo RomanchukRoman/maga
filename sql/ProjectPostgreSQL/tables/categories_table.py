@@ -20,5 +20,10 @@ class CategoriesTable(DbTable):
         sql += " LIMIT 1 OFFSET %(offset)s"
         cur = self.dbconn.conn.cursor()
         cur.execute(sql, {"offset": num - 1})
-        return cur.fetchone()       
-    
+        return cur.fetchone()
+
+    def find_by_id(self, category_id):
+        sql = "SELECT * FROM " + self.table_name() + " WHERE id = %s"
+        cur = self.dbconn.conn.cursor()
+        cur.execute(sql, (category_id,))
+        return cur.fetchone()
