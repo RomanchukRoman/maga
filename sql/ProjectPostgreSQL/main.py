@@ -132,10 +132,10 @@ class Main:
                 if not person:
                     print("Введено число, неудовлетворяющее количеству категорий!")
                 else:
-                    self.person_id = int(person[1])
+                    self.person_id = int(person[0]) # заменил 1 на 0
                     self.person_obj = person
                     break
-        print("Выбрана категория: " + self.person_obj[2] + " " + self.person_obj[0] + " " + self.person_obj[3])
+        print("Выбрана категория: " + self.person_obj[1])
         print("Блюда:")
         lst = PhonesTable().all_by_person_id(self.person_id)
         for i in lst:
