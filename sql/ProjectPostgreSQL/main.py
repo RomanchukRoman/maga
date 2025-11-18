@@ -4,7 +4,7 @@ sys.path.append('tables')
 from project_config import *
 from dbconnection import *
 from tables.categories_table import *
-from tables.phones_table import *
+from tables.dishes_table import *
 
 class Main:
 
@@ -17,25 +17,25 @@ class Main:
 
     def db_init(self):
         ct = CategoriesTable()
-        pht = PhonesTable()
+        dt = DishesTable()
         ct.create()
-        pht.create()
+        dt.create()
         return
 
     def db_insert_somethings(self):
         ct = CategoriesTable()
-        pht = PhonesTable()
+        dt = DishesTable()
         ct.insert_one(["Test", "Test", "Test"])
         ct.insert_one(["Test2", "Test2", "Test2"])
         ct.insert_one(["Test3", "Test3", "Test3"])
-        pht.insert_one([1, "123"])
-        pht.insert_one([2, "123"])
-        pht.insert_one([3, "123"])
+        dt.insert_one([1, "123"])
+        dt.insert_one([2, "123"])
+        dt.insert_one([3, "123"])
 
     def db_drop(self):
-        pht = PhonesTable()
+        dt = DishesTable()
         pt = CategoriesTable()
-        pht.drop()
+        dt.drop()
         pt.drop()
         return
 
@@ -90,7 +90,7 @@ class Main:
                 print("Пока не реализовано!")
                 next_step = "5"
             elif next_step == "5":
-                next_step = self.show_phones_by_categories()
+                next_step = self.show_dishes_by_categories()
             elif next_step != "0" and next_step != "9" and next_step != "3":
                 print("Выбрано неверное число! Повторите ввод!")
                 return "1"
@@ -120,7 +120,7 @@ class Main:
         CategoriesTable().insert_one(data)
         return
 
-    def show_phones_by_categories(self):
+    def show_dishes_by_categories(self):
         if self.category_id == -1:
             while True:
                 num = input("Укажите номер строки, в которой записана интересующая Вас категория (0 - отмена):")
@@ -137,7 +137,7 @@ class Main:
                     break
         print("Выбрана категория: " + self.category_obj[1])
         print("Блюда:")
-        lst = PhonesTable().all_by_category_id(self.category_id)
+        lst = DishesTable().all_by_category_id(self.category_id)
         for i in lst:
             print(i[1])
         menu = """Дальнейшие операции:
@@ -148,8 +148,7 @@ class Main:
     9 - выход."""
         print(menu)
         return self.read_next_step()
-
-        return self.read_next_step()
+    
 
     def main_cycle(self):
         current_menu = "0"

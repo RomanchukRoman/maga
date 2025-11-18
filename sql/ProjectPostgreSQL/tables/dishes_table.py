@@ -2,7 +2,7 @@
 
 from dbtable import *
 
-class PhonesTable(DbTable):
+class DishesTable(DbTable):
     def table_name(self):
         return self.dbconn.prefix + "dishes"
 
@@ -18,12 +18,12 @@ class PhonesTable(DbTable):
     def table_constraints(self):
         return ["PRIMARY KEY(id)"]
 
-    def all_by_category_id(self, pid):
+    def all_by_category_id(self, cid):
         sql = "SELECT * FROM " + self.table_name()
         sql += " WHERE category_id = %s"
         sql += " ORDER BY "
         sql += ", ".join(self.primary_key())
         cur = self.dbconn.conn.cursor()
-        cur.execute(sql, str(pid))
+        cur.execute(sql, str(cid))
         return cur.fetchall()           
 
