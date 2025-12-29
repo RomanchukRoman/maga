@@ -11,7 +11,7 @@ class DishesTable(DbTable):
             "id": ["serial", "PRIMARY KEY"],
             "name": ["varchar(64)", "NOT NULL", "UNIQUE"],
             "category_id": ["integer", "NOT NULL", "REFERENCES categories(id) ON DELETE CASCADE"],
-            "image_id": ["integer", "REFERENCES images(id)"],  # Убрал NOT NULL
+            "image_id": ["integer"], 
             "time": ["integer", "NOT NULL"],
             "description": ["text", "NOT NULL"],
             "technic": ["text", "NOT NULL"]

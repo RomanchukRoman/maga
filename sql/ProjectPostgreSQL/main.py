@@ -121,6 +121,10 @@ class Main:
         
         try:
             num = int(num)
+            if num <= 0: 
+                print("Номер должен быть положительным числом!")
+                return
+
             category = CategoriesTable().find_by_position(num)
             if not category:
                 print("Категория с таким номером не найдена!")
@@ -149,6 +153,10 @@ class Main:
         
         try:
             num = int(num)
+            if num <= 0: 
+                print("Номер должен быть положительным числом!")
+                return
+    
             category = CategoriesTable().find_by_position(num)
             if not category:
                 print("Категория с таким номером не найдена!")
@@ -272,31 +280,35 @@ class Main:
     def show_dishes_by_categories(self):
         if self.category_id == -1:
             while True:
-                num = input("Укажите номер строки, в которой записана интересующая Вас категория (0 - отмена):")
+                num = input("Укажите номер строки, в которой записана интересующая Вас категория (0 - отмена):").strip()
                 while len(num.strip()) == 0:
                     num = input("Пустая строка. Повторите ввод! Укажите номер строки, в которой записана интересующая Вас категория (0 - отмена):")
                 if num == "0":
                     return "1"
-                category = CategoriesTable().find_by_position(int(num))
-                if not category:
-                    print("Введено число, неудовлетворяющее количеству категорий!")
+                
+                if num.isdigit() and int(num) > 0:
+                    category = CategoriesTable().find_by_position(int(num))
+                    if not category:
+                        print("Введено число, неудовлетворяющее количеству категорий!")
+                    else:
+                        self.category_id = int(category[0]) 
+                        self.category_obj = category
+                        break
                 else:
-                    self.category_id = int(category[0]) 
-                    self.category_obj = category
-                    break
+                    print("Ошибка: введите положительное число!")
+        
         print("Выбрана категория: " + self.category_obj[1])
         print("Блюда:")
         lst = DishesTable().all_by_category_id(self.category_id)
         for i, dish in enumerate(lst, 1):
-            # dish[4] - name (название блюда)
             print(f"{i}\t{dish[4]}")
         
         menu = """Дальнейшие операции:
-        0 - возврат в главное меню;
-        1 - возврат в просмотр категорий;
-        6 - добавление нового блюда;
-        7 - удаление блюда;
-        9 - выход."""
+            0 - возврат в главное меню;
+            1 - возврат в просмотр категорий;
+            6 - добавление нового блюда;
+            7 - удаление блюда;
+            9 - выход."""
         print(menu)
         return self.read_next_step()
 

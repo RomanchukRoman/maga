@@ -14,6 +14,8 @@ class CategoriesTable(DbTable):
         }
 
     def find_by_position(self, num):
+        if num <= 0:
+            return None
         sql = "SELECT * FROM " + self.table_name()
         sql += " ORDER BY "
         sql += ", ".join(self.primary_key())
