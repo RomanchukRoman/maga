@@ -1,0 +1,150 @@
+roman@fedora:~$ history
+   1  sudo groupadd project
+   2  sudo useradd -u 5501 -g project user1
+   3  sudo useradd -u 5502 -g project user2
+   4  sudo useradd -u 5503 -g project user3
+   5  sudo groupadd -g 4444 curators
+   6  sudo useradd -G curators curator1
+   7  sudo useradd -G curators curator2
+   8  sudo mkdir /home/dir-m2551089
+   9  sudo chown :project /home/dir-m2551089
+   10  sudo chmod 2770 /home/dir-m2551089
+   11  sudo setfacl -m g:curators:rx /home/dir-m2551089
+   12  history
+
+roman@fedora:~$ sudo cat /etc/passwd
+root:x:0:0:Super User:/root:/bin/bash
+bin:x:1:1:bin:/bin:/usr/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/usr/sbin/nologin
+adm:x:3:4:adm:/var/adm:/usr/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/usr/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/usr/sbin/nologin
+operator:x:11:0:operator:/root:/usr/sbin/nologin
+games:x:12:100:games:/usr/games:/usr/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/usr/sbin/nologin
+nobody:x:65534:65534:Kernel Overflow User:/:/usr/sbin/nologin
+dbus:x:81:81:System Message Bus:/:/usr/sbin/nologin
+tss:x:59:59:Account used for TPM access:/:/usr/sbin/nologin
+systemd-oom:x:999:999:systemd Userspace OOM Killer:/:/usr/sbin/nologin
+polkitd:x:114:114:User for polkitd:/:/sbin/nologin
+systemd-coredump:x:998:998:systemd Core Dumper:/:/usr/sbin/nologin
+systemd-timesync:x:997:997:systemd Time Synchronization:/:/usr/sbin/nologin
+chrony:x:996:996:chrony system user:/var/lib/chrony:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/usr/sbin/nologin
+systemd-resolve:x:193:193:systemd Resolver:/:/usr/sbin/nologin
+avahi:x:70:70:Avahi mDNS/DNS-SD Stack:/var/run/avahi-daemon:/usr/sbin/nologin
+unbound:x:994:994:Unbound DNS resolver:/var/lib/unbound:/sbin/nologin
+clevis:x:993:993:Clevis Decryption Framework unprivileged user:/var/cache/clevis:/usr/sbin/nologin
+usbmuxd:x:113:113:usbmuxd user:/:/usr/sbin/nologin
+gluster:x:992:992:GlusterFS daemons:/run/gluster:/usr/sbin/nologin
+qemu:x:107:107:qemu user:/:/usr/sbin/nologin
+apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin
+openvpn:x:991:991:OpenVPN:/etc/openvpn:/usr/sbin/nologin
+nm-openvpn:x:990:990:Default user for running openvpn spawned by NetworkManager:/:/usr/sbin/nologin
+abrt:x:173:173::/etc/abrt:/usr/sbin/nologin
+nm-openconnect:x:989:989:NetworkManager user for OpenConnect:/:/usr/sbin/nologin
+wsdd:x:988:988:Web Services Dynamic Discovery host daemon:/:/usr/sbin/nologin
+rtkit:x:987:987:RealtimeKit:/:/usr/sbin/nologin
+pipewire:x:986:986:PipeWire System Daemon:/run/pipewire:/usr/sbin/nologin
+flatpak:x:984:984:Flatpak system helper:/:/usr/sbin/nologin
+geoclue:x:983:983:User for geoclue:/var/lib/geoclue:/sbin/nologin
+sssd:x:981:981:User for sssd:/run/sssd:/sbin/nologin
+colord:x:980:980:colord colour management daemon:/var/lib/colord:/usr/sbin/nologin
+gdm:x:42:42:GNOME Display Manager:/var/lib/gdm:/usr/sbin/nologin
+rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/usr/sbin/nologin
+dnsmasq:x:979:979:Dnsmasq DHCP and DNS server:/var/lib/dnsmasq:/usr/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/usr/sbin/nologin
+gnome-remote-desktop:x:977:977:GNOME Remote Desktop:/var/lib/gnome-remote-desktop:/usr/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/usr/share/empty.sshd:/usr/sbin/nologin
+passim:x:976:976:Local Caching Server:/usr/share/empty:/usr/sbin/nologin
+tcpdump:x:72:72:tcpdump:/:/usr/sbin/nologin
+roman:x:1000:1000:Roman:/home/roman:/bin/bash
+user1:x:5501:1001::/home/user1:/bin/bash
+user2:x:5502:1001::/home/user2:/bin/bash
+user3:x:5503:1001::/home/user3:/bin/bash
+curator1:x:5504:5504::/home/curator1:/bin/bash
+curator2:x:5505:5505::/home/curator2:/bin/bash
+
+roman@fedora:~$ sudo cat /etc/group
+root:x:0:
+sys:x:3:
+adm:x:4:
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mem:x:8:
+kmem:x:9:
+wheel:x:10:roman
+cdrom:x:11:
+mail:x:12:
+man:x:15:
+dialout:x:18:
+floppy:x:19:
+games:x:20:
+utmp:x:22:
+tape:x:33:
+kvm:x:36:qemu
+video:x:39:
+ftp:x:50:
+lock:x:54:
+audio:x:63:
+users:x:100:
+clock:x:103:
+input:x:104:
+render:x:105:
+sgx:x:106:
+nobody:x:65534:
+bin:x:1:
+daemon:x:2:
+dbus:x:81:
+tss:x:59:clevis
+systemd-journal:x:190:
+systemd-oom:x:999:
+polkitd:x:114:
+systemd-coredump:x:998:
+systemd-timesync:x:997:
+chrony:x:996:
+systemd-network:x:192:
+systemd-resolve:x:193:
+avahi:x:70:
+printadmin:x:995:
+unbound:x:994:
+clevis:x:993:
+usbmuxd:x:113:
+utempter:x:35:
+gluster:x:992:
+qemu:x:107:
+apache:x:48:
+openvpn:x:991:
+nm-openvpn:x:990:
+abrt:x:173:
+dip:x:40:
+nm-openconnect:x:989:
+wsdd:x:988:
+rtkit:x:987:
+pipewire:x:986:
+brlapi:x:985:
+flatpak:x:984:
+geoclue:x:983:
+libvirt:x:982:
+sssd:x:981:
+colord:x:980:
+gdm:x:42:
+rpc:x:32:
+dnsmasq:x:979:
+rpcuser:x:29:
+gnome-initial-setup:x:978:
+gnome-remote-desktop:x:977:
+sshd:x:74:
+passim:x:976:
+tcpdump:x:72:
+plocate:x:975:
+gamemode:x:974:
+roman:x:1000:
+project:x:1001:
+curators:x:4444:curator1,curator2
+curator1:x:5504:
+curator2:x:5505:
