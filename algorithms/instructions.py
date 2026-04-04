@@ -1,32 +1,37 @@
-# номер посылки 159787694
+# номер посылки 159848640
 
-def main() -> None:
-    '''Программа, которая расшифровывает сжатые сообщения и возвращает строку с командами.'''
-    instructions: str = input()
-    numbers: str = '0123456789'
-    start_range: str = '['
-    end_range: str = ']'
-    
-    result: str = ''
-    stack: list = [] 
-    current_str: str = ''
-    current_num: str = ''
+NUMBERS: str = '0123456789'
+START_RANGE: str = '['
+END_RANGE: str = ']'
+
+def decode_instructions(instructions: str) -> str:
+    '''Расшифровка сжатых сообщений и возврат строки с командами.'''
+    stack: list[tuple[int, str]] = [] 
+    current_instruction: str = ''
+    current_repeat: str = ''
 
     for instruction in instructions:
-        if instruction in numbers:
-            current_num += instruction
-        elif instruction == start_range:
-            stack.append((int(current_num) if current_num else 1, current_str))
-            current_str = ''
-            current_num = ''
-        elif instruction == end_range:
-            num, prev_str = stack.pop()
-            current_str = prev_str + current_str * num
+        if instruction in NUMBERS:
+            current_repeat += instruction
+        elif instruction == START_RANGE:
+            repeat_count = int(current_repeat) if current_repeat else 1
+            stack.append((repeat_count, current_instruction))
+            current_instruction = ''
+            current_repeat = ''
+        elif instruction == END_RANGE:
+            repeat_count, prev_instruction = stack.pop()
+            current_instruction = prev_instruction + current_instruction * repeat_count
         else:
-            current_str += instruction
-    
-    result = current_str
-    print(result)
+            current_instruction += instruction
+
+    return current_instruction
+
+def main() -> str:
+    '''Основная функция для ввода данных.'''
+    instructions: str = input()
+    result: str = decode_instructions(instructions)
+    return result
 
 if __name__ == '__main__':
-    main()
+    result = main()
+    print(result)
