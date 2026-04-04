@@ -1,23 +1,28 @@
-# номер посылки 159776166
+# номер посылки 159846304
 
-def main() -> None:
-    '''Определение минимального количества транспортных платформ, необходимых для перевозки всех роботов, описанных в массиве.'''
-    robots: list[int] = list(map(int, input().split()))
-    limit: int = int(input())
+def calculate_platforms(robots: list[int], limit: int) -> int:
+    '''Определение количества транспортных платформ для перевозки роботов.'''
+    sorted_robots = sorted(robots)
+    light: int = 0
+    heavy: int = len(sorted_robots) - 1
     platforms: int = 0
 
-    robots.sort()
-    lo: int = 0
-    hi: int = len(robots) - 1
-
-    while lo <= hi:
-        if robots[lo] + robots[hi] <= limit:
-            lo += 1
-            hi -= 1
-        else:
-            hi -= 1
+    while light <= heavy:
+        if sorted_robots[light] + sorted_robots[heavy] <= limit:
+            light += 1
+        heavy -= 1
         platforms += 1
-    print(platforms)
+    
+    return platforms
+
+def main() -> int:
+    '''Основная функция для ввода данных.'''
+    robots: list[int] = [int(x) for x in input().split()]
+    limit: int = int(input())
+    
+    result: int = calculate_platforms(robots, limit)
+    return result
 
 if __name__ == '__main__':
-    main()
+    result = main()
+    print(result)
