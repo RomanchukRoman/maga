@@ -1,4 +1,4 @@
-# номер посылки 159846304
+# номер посылки 159908626
 
 def calculate_platforms(robots: list[int], limit: int) -> int:
     '''Определение количества транспортных платформ для перевозки роботов.'''
@@ -17,7 +17,7 @@ def calculate_platforms(robots: list[int], limit: int) -> int:
 
 def main() -> int:
     '''Основная функция для ввода данных.'''
-    robots: list[int] = [int(x) for x in input().split()]
+    robots: list[int] = [int(robot) for robot in input().split()]
     limit: int = int(input())
     
     result: int = calculate_platforms(robots, limit)
